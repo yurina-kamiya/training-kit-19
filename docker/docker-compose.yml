@@ -1,0 +1,23 @@
+version: '2'
+services:
+  # MySQLのコンテナを作成するための設定
+  seattle_library_db:
+    container_name: seattle_library_db
+    image: seattle_library_db
+    build: ./mysql
+    ports:
+      - "3306:3306"
+    # コンテナ内の環境変数を指定
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    # 指定のディレクトリ・ファイルを、コンテナにマウントする
+    volumes:
+      - db-data:/var/lib/mysql
+
+# MySQLのデータや、gemなど、ボリュームとして別管理することが出来る
+# コンテナ側でマウントするように設定することで、たとえdocker imageを削除したとしてもデータを引き継ぐ事ができる
+volumes:
+  db-data:
+    driver: local
+  bundle:
+    driver: local
